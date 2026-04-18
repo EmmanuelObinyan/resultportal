@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("senate") // "admin" or "senate"
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Student {
+  id        String   @id @default(cuid())
+  matricNo  String   @unique
+  name      String
+  email     String?
+  parent    Parent?
+  results   Result[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Parent {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  studentId String   @unique
+  student   Student  @relation(fields: [studentId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Result {
+  id            String   @id @default(cuid())
+  studentId     String
+  student       Student  @relation(fields: [studentId], references: [id])
+  courseCode    String
+  courseName    String?
+  score         Float
+  grade         String
+  status        String   @default("Pending") // "Pending", "Verified", "Rejected"
+  verifiedBy    String?  // Could be the User ID of the senator who verified it
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
