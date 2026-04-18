@@ -8,7 +8,7 @@ export default function SenateLayout({ children }: { children: React.ReactNode }
       <aside className="sidebar">
         <div className="sidebar-brand">
           <div className="sidebar-logo">
-            <Image src="/logo.png" alt="University Logo" width={40} height={40} style={{ objectFit: 'contain' }} />
+            <Image src="/mtu-logo.jpg" alt="University Logo" width={40} height={40} style={{ objectFit: 'contain', mixBlendMode: 'multiply' }} />
           </div>
           <div className="sidebar-brand-text">
             <h2>M.T.U.</h2>

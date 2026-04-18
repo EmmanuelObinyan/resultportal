@@ -17,7 +17,7 @@ export default function LoginPage() {
 
         <div style={{ zIndex: 1, marginTop: 'auto', marginBottom: 'auto' }}>
           <div style={{ backgroundColor: 'var(--surface)', padding: '1.5rem', borderRadius: '24px', display: 'inline-block', marginBottom: '2rem', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
-            <Image src="/logo.png" alt="Institutional Crest" width={100} height={100} style={{ objectFit: 'contain' }} />
+            <Image src="/mtu-logo.jpg" alt="Institutional Crest" width={110} height={110} style={{ objectFit: 'contain', mixBlendMode: 'multiply' }} />
           </div>
           <h1 style={{ fontSize: '3.5rem', fontWeight: 700, letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '1.5rem' }}>
             Mountain Top<br/>University

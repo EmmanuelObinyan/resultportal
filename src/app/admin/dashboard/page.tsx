@@ -1,4 +1,18 @@
-export default function AdminDashboardPage() {
+import { prisma } from '../../lib/prisma';
+
+export const dynamic = 'force-dynamic'; // Ensures fresh data load
+
+export default async function AdminDashboardPage() {
+  const total = await prisma.result.count();
+  const pending = await prisma.result.count({ where: { status: 'Pending' } });
+  const verified = await prisma.result.count({ where: { status: 'Verified' } });
+
+  const recent = await prisma.result.findMany({
+    take: 5,
+    orderBy: { createdAt: 'desc' },
+    include: { student: true }
+  });
+
   return (
     <>
       <div className="card-header" style={{ marginBottom: '2rem' }}>
@@ -11,15 +25,15 @@ export default function AdminDashboardPage() {
       <div className="grid-cards">
         <div className="stat-card primary">
           <div className="stat-card-title">Total Processed</div>
-          <div className="stat-card-value">1,248</div>
+          <div className="stat-card-value">{total}</div>
         </div>
         <div className="stat-card warning">
           <div className="stat-card-title">Pending Senate Action</div>
-          <div className="stat-card-value" style={{ color: 'var(--warning)' }}>312</div>
+          <div className="stat-card-value" style={{ color: 'var(--warning)' }}>{pending}</div>
         </div>
         <div className="stat-card success">
           <div className="stat-card-title">Officially Verified</div>
-          <div className="stat-card-value" style={{ color: 'var(--success)' }}>936</div>
+          <div className="stat-card-value" style={{ color: 'var(--success)' }}>{verified}</div>
         </div>
       </div>
 
@@ -29,35 +43,31 @@ export default function AdminDashboardPage() {
           <table>
             <thead>
               <tr>
-                <th>Batch ID</th>
+                <th>Student ID</th>
                 <th>Course</th>
-                <th>Uploaded By</th>
                 <th>Date</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><span style={{ fontWeight: 600, color: 'var(--text-muted)' }}>#BCH-4001</span></td>
-                <td style={{ fontWeight: 500 }}>CSC401 - Artificial Intelligence</td>
-                <td>Dr. A. Ojo</td>
-                <td>Oct 24, 2023</td>
-                <td><span className="badge badge-warning">Awaiting Senate</span></td>
-              </tr>
-              <tr>
-                <td><span style={{ fontWeight: 600, color: 'var(--text-muted)' }}>#BCH-4000</span></td>
-                <td style={{ fontWeight: 500 }}>CSC402 - Software Engineering</td>
-                <td>Dr. B. Ade</td>
-                <td>Oct 23, 2023</td>
-                <td><span className="badge badge-success">Fully Verified</span></td>
-              </tr>
-              <tr>
-                <td><span style={{ fontWeight: 600, color: 'var(--text-muted)' }}>#BCH-3999</span></td>
-                <td style={{ fontWeight: 500 }}>MTH201 - Advanced Calculus</td>
-                <td>Prof. C. Eze</td>
-                <td>Oct 22, 2023</td>
-                <td><span className="badge badge-success">Fully Verified</span></td>
-              </tr>
+              {recent.length === 0 ? (
+                <tr>
+                  <td colSpan={4} style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No recent activity found.</td>
+                </tr>
+              ) : recent.map((res) => (
+                <tr key={res.id}>
+                  <td><span style={{ fontWeight: 600, color: 'var(--text-muted)' }}>{res.student.matricNo}</span></td>
+                  <td style={{ fontWeight: 500 }}>{res.courseCode}</td>
+                  <td>{res.createdAt.toLocaleDateString()}</td>
+                  <td>
+                    {res.status === 'Pending' ? (
+                      <span className="badge badge-warning">Awaiting Senate</span>
+                    ) : (
+                      <span className="badge badge-success">Fully Verified</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
