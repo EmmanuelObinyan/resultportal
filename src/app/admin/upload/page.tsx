@@ -35,18 +35,18 @@ export default function AdminUploadPage() {
         </p>
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '1.5rem' }}>
         <button 
           className={`btn ${activeTab === 'single' ? 'btn-primary' : 'btn-secondary'}`} 
           onClick={() => { setActiveTab('single'); setStatus(null); }}
         >
-          Single Entry Form
+          📝 Single Entry Form
         </button>
         <button 
           className={`btn ${activeTab === 'csv' ? 'btn-primary' : 'btn-secondary'}`} 
           onClick={() => { setActiveTab('csv'); setStatus(null); }}
         >
-          Batch CSV Upload
+          📂 Batch CSV Upload
         </button>
       </div>
 
@@ -61,7 +61,7 @@ export default function AdminUploadPage() {
           <form action={handleSingleAction} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <h3 style={{ fontSize: '1.125rem' }}>Single Result Entry</h3>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
               <div>
                 <label>Matriculation Number</label>
                 <input type="text" name="matricNo" placeholder="e.g. 190404001" required />
@@ -72,7 +72,7 @@ export default function AdminUploadPage() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
               <div>
                 <label>Total Score (100)</label>
                 <input type="number" name="score" placeholder="0" min="0" max="100" required />
@@ -90,7 +90,7 @@ export default function AdminUploadPage() {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem' }}>
+            <button type="submit" className="btn btn-primary btn-block" style={{ marginTop: '0.5rem' }}>
               Submit for Verification
             </button>
           </form>
